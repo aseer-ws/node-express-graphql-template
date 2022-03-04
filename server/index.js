@@ -1,4 +1,6 @@
-import express from 'express';
+// eslint-disable-next-line no-unused-vars
+import express, { Express } from 'express';
+import cors from 'cors';
 import { graphqlHTTP } from 'express-graphql';
 import { GraphQLSchema } from 'graphql';
 import dotenv from 'dotenv';
@@ -7,7 +9,7 @@ import axios from 'axios';
 import { newCircuitBreaker } from '@services/circuitbreaker';
 import rTracer from 'cls-rtracer';
 import bodyParser from 'body-parser';
-import { connect } from '@database';
+import { connect } from '@database/index';
 import { QueryRoot } from '@gql/queries';
 import { MutationRoot } from '@gql/mutations';
 import { isLocalEnv, isTestEnv, logger, unless } from '@utils/index';
@@ -16,10 +18,15 @@ import cluster from 'cluster';
 import os from 'os';
 import authenticateToken from '@middleware/authenticate/index';
 import 'source-map-support/register';
+import { initQues } from '@utils/queue';
 
 const totalCPUs = os.cpus().length;
 
+console.log('I have ', totalCPUs, ' CPUs1');
+
+/** @type {Express} */
 let app;
+
 export const fetchFromGithub = async query =>
   axios.get(`https://api.github.com/search/repositories?q=${query}&per_page=2`);
 const githubBreaker = newCircuitBreaker(fetchFromGithub, 'Github API is down');
@@ -35,6 +42,10 @@ export const init = () => {
 
   if (!app) {
     app = express();
+  }
+
+  if (isLocalEnv()) {
+    app.use(cors());
   }
 
   app.use(express.json());
@@ -95,6 +106,7 @@ export const init = () => {
   /* istanbul ignore next */
   if (!isTestEnv()) {
     app.listen(9000);
+    initQues();
   }
 };
 

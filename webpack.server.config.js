@@ -28,8 +28,22 @@ module.exports = (options = {}) => ({
   entry: options.entry,
   optimization: options.optimization,
   devtool: 'source-map',
+  externals: {
+    bull: 'commonjs2 bull'
+  },
   module: {
     rules: [
+      {
+        test: /node_modules\/bull\/lib\/commands\/index\.js$/,
+        use: {
+          loader: 'string-replace-loader',
+          options: {
+            search: '__dirname',
+            // eslint-disable-next-line no-template-curly-in-string
+            replace: "${path.dirname(require.resolve('bull'))}/lib/commands"
+          }
+        }
+      },
       {
         test: /\.jsx?$/, // Transform all .js and .jsx files required somewhere with Babel
         exclude: /node_modules/,
