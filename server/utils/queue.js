@@ -4,11 +4,11 @@ import moment from 'moment';
 const queues = {};
 
 export const QUEUE_NAMES = {
-  SCHEDULE_JOBS: 'scheduleJob'
+  SCHEDULE_JOB: 'scheduleJob'
 };
 
 export const QUEUE_PROCESSORS = {
-  [QUEUE_NAMES.SCHEDULE_JOBS]: (job, done) => {
+  [QUEUE_NAMES.SCHEDULE_JOB]: (job, done) => {
     console.log(`${moment()}::Job with id: ${job.id} is being executed.\n`);
   }
 };
@@ -20,6 +20,7 @@ export const initQues = () => {
   });
 };
 
+/** @returns {Bull.Queue} */
 export const getQueue = queueName => {
   if (!queues[queueName]) {
     queues[queueName] = new Bull(queueName, `redis://${process.env.REDIS_DOMAIN}:${process.env.REDIS_PORT}`);
