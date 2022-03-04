@@ -3,7 +3,6 @@
     "baseUrl": ".",
     "paths": {
       "@server/*": ["server/*"],
-      "@root/*": ["*"],
       "@utils/*": ["server/utils/*"],
       "@middleware/*": ["server/middleware/*"],
       "@services/*": ["server/services/*"],
