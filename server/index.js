@@ -28,8 +28,6 @@ import { WebSocketServer } from 'ws';
 
 const totalCPUs = os.cpus().length;
 
-console.log('I have ', totalCPUs, ' CPUs1');
-
 /** @type {Express} */
 let app;
 
@@ -54,17 +52,12 @@ export const init = async () => {
   app.use(rTracer.expressMiddleware());
   app.use(cors());
   app.use(unless(authenticateToken, '/', '/sign-in', '/sign-up'));
-  // app.use(
-  //   '/graphql',
-  //   graphqlHTTP({
-  //     schema: schema,
-  //     graphiql: true,
-  //     customFormatErrorFn: e => {
-  //       logger().info({ e });
-  //       return e;
-  //     }
-  //   })
-  // );
+
+  app.get('/', (req, res) => {
+    const message = 'Service up and running!';
+    logger().info(message);
+    res.json(message);
+  });
 
   const createBodyParsedRoutes = routeConfigs => {
     if (!routeConfigs.length) {
@@ -99,12 +92,6 @@ export const init = async () => {
       }
     }
   ]);
-
-  app.get('/', (req, res) => {
-    const message = 'Service up and running!';
-    logger().info(message);
-    res.json(message);
-  });
 
   /* istanbul ignore next */
   if (!isTestEnv()) {
