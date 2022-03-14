@@ -23,7 +23,6 @@ export const QUEUE_PROCESSORS = {
     done();
   },
   [QUEUE_NAMES.MIDNIGHT_CRON]: (job, done) => {
-    console.log({ job, done });
     console.log(`${moment()}:: The "${QUEUE_NAMES.MIDNIGHT_CRON}" is being executed at 12:00 AM`);
     done();
   },
@@ -35,6 +34,7 @@ export const QUEUE_PROCESSORS = {
         scheduleIn: 0
       }
     });
+    done();
   }
 };
 
