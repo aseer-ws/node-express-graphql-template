@@ -28,12 +28,12 @@ describe('init', () => {
   it('should ensure the no of call to app.use', async () => {
     const { init, app } = await require('../index');
     mocks.app = app;
-    jest.spyOn(mocks.app, 'use');
+    jest.spyOn(mocks.app, 'get');
     await init();
 
     // check if the server has been started
-    expect(mocks.app.use.mock.calls.length).toBe(7);
-    expect(mocks.app.use.mock.calls[0][0]).toEqual(expect.any(Function));
+    expect(mocks.app.get.mock.calls.length).toBe(2);
+    expect(mocks.app.get.mock.calls[0][0]).toEqual('/');
   });
 
   it('should invoke @database.connect ', async () => {

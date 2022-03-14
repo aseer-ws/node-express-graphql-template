@@ -10,6 +10,7 @@ import { storeProductMutations } from '@gql/models/storeProducts';
 import { supplierProductMutations } from '@gql/models/supplierProducts';
 import { userMutations } from '@gql/models/users';
 import { MUTATION_TYPE } from '@utils/constants';
+import { scheduleJob } from './custom/scheduleJobMutation';
 
 const shouldNotAddMutation = (type, table) => {
   if (type === MUTATION_TYPE.CREATE) {
@@ -75,6 +76,10 @@ export const addMutations = () => {
       };
     }
   });
+
+  // custom mutations
+  mutations.scheduleJob = scheduleJob;
+
   return mutations;
 };
 
