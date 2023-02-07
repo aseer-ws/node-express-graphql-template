@@ -34,7 +34,7 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           docker build --build-arg ENVIRONMENT_NAME=production  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG3
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Render Amazon ECS task definition
         id: ecs-cd-starter-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
