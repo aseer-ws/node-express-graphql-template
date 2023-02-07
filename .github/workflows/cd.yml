@@ -33,7 +33,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           DOCKER_BUILDKIT: 1
         run: |
-          docker build --build-arg ENVIRONMENT_NAME=production  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg ENVIRONMENT_NAME=development  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Render Amazon ECS task definition
         id: ecs-cd-starter-container
