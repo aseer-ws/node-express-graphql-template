@@ -9,8 +9,6 @@ jobs:
   docker-build-push-deploy:
     name: Docker build, push and deploy
     runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT_NAME: 'production'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,7 +32,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          DOCKER_BUILDKIT=1 docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          DOCKER_BUILDKIT=1 docker build --build-arg ENVIRONMENT_NAME=production  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG3
       - name: Render Amazon ECS task definition
         id: ecs-cd-starter-container
